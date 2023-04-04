@@ -3,15 +3,17 @@ import { useQuery } from '@apollo/client'
 
 import './App.css'
 
-import Film from './Film'
+import Transaction from './Transaction'
 import { graphql } from '../src/gql'
 
-const allFilmsWithVariablesQueryDocument = graphql(/* GraphQL */ `
-  query allFilmsWithVariablesQuery($first: Int!) {
-    allFilms(first: $first) {
-      edges {
-        node {
-          ...FilmItem
+const ACCOUNT_QUERY = graphql(/* GraphQL */ `
+  query CasaAccount($accountId: String!, $first: Int!) {
+    CasaAccount(accountId: $accountId) {
+      transactions(first: $first) {
+        edges {
+          node {
+            ...TransactionItem
+          }
         }
       }
     }
@@ -21,10 +23,11 @@ const allFilmsWithVariablesQueryDocument = graphql(/* GraphQL */ `
 
 function App() {
   // `data` is typed!
-  const { data } = useQuery(allFilmsWithVariablesQueryDocument, { variables: { first: 10 } })
+  const { data } = useQuery(ACCOUNT_QUERY, { variables: { first: 10, accountId: "123" } })
+  console.log(data)
   return (
     <div className="App">
-        <header className="App-header">
+      <header className="App-header">
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -35,7 +38,7 @@ function App() {
           rel="noopener noreferrer"
         >
         </a>
-        {data && <ul>{data.allFilms?.edges?.map((e, i) => e?.node && <Film film={e?.node} key={`film-${i}`} />)}</ul>}
+        {data && <ul>{data?.CasaAccount?.transactions?.edges?.map((e, i) => e?.node && <Transaction transaction={e.node} key={`trx-${i}`} />)}</ul>}
       </header>
     </div>
   )

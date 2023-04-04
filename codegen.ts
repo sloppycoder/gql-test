@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "https://swapi-graphql.netlify.app/.netlify/functions/index",
+  schema: "http://localhost:8080/graphql",
   documents: "src/**/*.tsx",
   generates: {
     "src/gql/": {
